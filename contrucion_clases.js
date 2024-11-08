@@ -32,8 +32,7 @@ class RectDownNew{
     if (this.text !== newText) {
       this.text = newText;
       this.currentTextIndex = 0;
-      // Cambiar nombre de la variable ok
-      ok = false; 
+      escribiendo = false; 
     }
   }
   separar() {
@@ -99,7 +98,7 @@ class RectDownNew{
       if (this.currentTextIndex < this.separar().length) {
         this.currentTextIndex++;
       } else {
-        ok = !ok; 
+        escribiendo = !ok; 
       }
       this.textSpeedCounter = 0; 
     } else {
@@ -262,169 +261,3 @@ class RectSelect {
     image(img[0], this.posX + 25, this.posY + this.sizeHegth / 2 - 10, 15, 30);
   }
 }
-
-
-
-
-
-
-// class RectExternal {
-//     constructor(upOrDown, posX, posY, sizeWidth, sizeHegth, color) {
-//       this.upOrDown = upOrDown;
-//       this.posX = posX;
-//       this.posY = posY;
-//       this.sizeWidth = sizeWidth;
-//       this.sizeHegth = sizeHegth;
-//       this.color = color;
-//     }
-//     bordes1(){
-//       let borderWidth1 = 7;
-//       let borderWidth2 = 5;
-//       let borderWidth3 = 3;
-  
-//       strokeWeight(borderWidth1);
-//       stroke("#27302F");
-//       fill("#27302F");
-//       rect(this.posX, this.posY, this.sizeWidth, this.sizeHegth, 0);
-  
-  
-//       strokeWeight(borderWidth2);
-//       stroke("#C5AA46");
-//       fill("#C5AA46");
-//       rect(
-//         this.posX + borderWidth1,
-//         this.posY + borderWidth1,
-//         this.sizeWidth - 2 * (borderWidth1 + 1),
-//         this.sizeHegth - 2 * (borderWidth1 + 1),
-//         8
-//       );
-  
-//       strokeWeight(borderWidth3);
-//       stroke("#EAEFF9");
-//       fill(this.color);
-//       rect(
-//         this.posX + borderWidth1 + borderWidth2,
-//         this.posY + borderWidth1 + borderWidth2,
-//         this.sizeWidth - 2 * (borderWidth1 + borderWidth2 + 1),
-//         this.sizeHegth - 2 * (borderWidth1 + borderWidth2 + 1),
-//         4
-//       );
-//     }
-//     border2(){
-//       let borderWidth1 = 7; 
-//         let borderWidth2 = 5; 
-  
-//         strokeWeight(borderWidth1);
-//         stroke("#27302F");
-//         fill("#27302F");
-//         rect(this.posX, this.posY, this.sizeWidth, this.sizeHegth, 0);
-  
-//         strokeWeight(borderWidth2);
-//         stroke("#6B687F");
-//         fill("#6B687F");
-//         rect(
-//           this.posX + borderWidth1,
-//           this.posY + borderWidth1,
-//           this.sizeWidth - 2 * (borderWidth1 + 1),
-//           this.sizeHegth - 2 * (borderWidth1 + 1),
-//           8
-//         );
-  
-//         fill(this.color);
-//         noStroke();
-//         rect(
-//           this.posX + borderWidth1 + borderWidth2 ,
-//           this.posY + borderWidth1 + borderWidth2 ,
-//           this.sizeWidth - 2 * (borderWidth1 + borderWidth2 + 1),
-//           this.sizeHegth - 2 * (borderWidth1 + borderWidth2 + 1),
-//           4
-//         );
-//     }
-//     draw() {
-     
-//       if (this.upOrDown === "Down") {
-//         this.bordes1();
-//         return
-//       };
-//       if (this.upOrDown === "Select"){
-//         this.border2();
-//         return
-//       }else {
-//         fill(this.color);
-//         noStroke();
-//         rect(this.posX, this.posY, this.sizeWidth, this.sizeHegth);
-//         fill(0);
-//       }
-//     }
-//   }
-  
-  // // class RectDown {
-  // //   constructor(dad, posX, posY, sizeWidth, sizeHegth, color, text) {
-  // //     this.dad = dad;
-  // //     this.posX = posX;
-  // //     this.posY = posY;
-  // //     this.sizeWidth = sizeWidth;
-  // //     this.sizeHegth = sizeHegth;
-  // //     this.color = color;
-  // //     this.text = text;
-  // //     this.currentTextIndex = 0; 
-  // //     this.textSpeedCounter = 0; 
-  // //     this.textSpeedDelay = 1; 
-  // //   }
-  
-  // //   // Método para actualizar el texto y reiniciar la animación
-  // //   setText(newText) {
-  // //     if (this.text !== newText) {
-  // //       this.text = newText;
-  // //       this.currentTextIndex = 0;
-  // //       ok = false; 
-  // //     }
-  // //   }
-  
-  // //   separar() {
-      
-  // //     return this.text.replaceAll(" ", "  ");
-  // //   }
-  
-  // //   draw() {
-  // //     fill(this.color);
-  // //     noStroke();
-  // //     rect(this.posX, this.posY, this.sizeWidth - 30, this.sizeHegth - 30);
-  
-  // //     fill(0);
-  // //     textFont(fontPokemon);
-  // //     textSize(40);
-  
-  // //     if (this.sizeWidth === canvasWidth - 30) {
-  // //       fill(255);
-  // //       textAlign(LEFT, TOP);
-  // //       text(
-  // //         this.separar().substring(0, this.currentTextIndex), // Mostrar hasta el índice actual
-  // //         this.posX + 30,
-  // //         this.posY + 15
-  // //       );
-  
-  // //       if (this.textSpeedCounter >= this.textSpeedDelay) {
-  // //         if (this.currentTextIndex < this.separar().length) {
-  // //           this.currentTextIndex++;
-  // //         } else {
-  // //           ok = !ok; // Alternar `ok` cuando el texto completo ya se muestra
-  // //         }
-  // //         this.textSpeedCounter = 0; // Reinicia el contador
-  // //       } else {
-  // //         this.textSpeedCounter++; // Incrementa el contador de velocidad
-  // //       }
-  // //     } else {
-  // //       textAlign(LEFT, CENTER);
-  // //       text(
-  // //         this.text,
-  // //         this.posX + this.sizeWidth / 3,
-  // //         this.posY + this.sizeHegth / 2
-  // //       );
-  // //     }
-  // //   }
-  // // }
-
-
-
-  

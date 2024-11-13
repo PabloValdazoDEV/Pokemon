@@ -42,7 +42,7 @@ const rectDownLeft2 = new RectDownOptionNew(
   rectDownLeftPp.sizeWidth,
   rectDownLeftPp.sizeHeigth,
   0, 
-  `PP        ${pokemonActual.Ataques[0].pp}/${pokemonActual.Ataques[0].ppTotal} \nTIPO/${pokemonActual.Ataques[0].tipo}`, 
+  `PP        ${Yo.pokemons[0].Ataques[0].pp}/${Yo.pokemons[0].Ataques[0].ppTotal} \nTIPO/${Yo.pokemons[0].Ataques[0].tipo}`, 
   32
 
 )
@@ -110,7 +110,7 @@ for (i = 0; i < 4; i++){
     rectDownLeft.sizeWidth / 2 -20,
     rectDownLeft.sizeHeigth / 2,
       0,
-      pokemonActual.Ataques[i].nombre
+      Yo.pokemons[0].Ataques[i].nombre
     )
     rectDownOption2.push(ataque)
   }
@@ -121,7 +121,7 @@ for (i = 0; i < 4; i++){
     rectDownLeft.sizeWidth / 2 -20,
     rectDownLeft.sizeHeigth / 2,
       0,
-      pokemonActual.Ataques[i].nombre
+      Yo.pokemons[0].Ataques[i].nombre
     )
     rectDownOption2.push(ataque)
   }
@@ -132,7 +132,7 @@ for (i = 0; i < 4; i++){
     rectDownLeft.sizeWidth / 2 -20,
     rectDownLeft.sizeHeigth / 2,
       0,
-      pokemonActual.Ataques[i].nombre
+      Yo.pokemons[0].Ataques[i].nombre
     )
     rectDownOption2.push(ataque)
   }
@@ -143,7 +143,7 @@ for (i = 0; i < 4; i++){
     rectDownLeft.sizeWidth / 2-20,
     rectDownLeft.sizeHeigth / 2,
     0,
-      pokemonActual.Ataques[i].nombre
+      Yo.pokemons[0].Ataques[i].nombre
     )
     rectDownOption2.push(ataque)
   }
@@ -154,10 +154,19 @@ function cargaDeImages(){
   
   rectUpBotLeft = new RectUpBotNew(100, rectUp.posY + rectUp.sizeHeigth - 144 , 150, 150, loadImage("assets/back.png"))
 
-  rectUpBotRigth= new RectUpBotLifeNew(rectUp.posX + rectUp.sizeWidth - 300, rectUp.posY + rectUp.sizeHeigth - (37 * 2.5) , 104 * 2.5, 37 * 2.5, loadImage("assets/MiVida-100.png"), pokemonActual.vida)
+  rectUpBotRigth= new RectUpBotLifeNew(rectUp.posX + rectUp.sizeWidth - 300, rectUp.posY + rectUp.sizeHeigth - (37 * 2.5) , 104 * 2.5, 37 * 2.5, loadImage("assets/MiVida-100.png"), Yo.pokemons[0].vida, Yo.pokemons[0])
 
   rectUpTopRigth = new RectUpBotNew(450, 20 , 150, 150, loadImage("assets/front.png"))
 
-  rectUpTopLeft = new RectUpBotLifeNew(50, 20, (104 * 2.5), 29 * 2.5, loadImage("assets/EnemigoVida-100.png"), pokemonActual.vida)
+  rectUpTopLeft = new RectUpBotLifeNew(50, 20, (104 * 2.5), 29 * 2.5, loadImage("assets/EnemigoVida-100.png"), pokemonEnemigo.vida, pokemonEnemigo)
   
+  rectPokemon = new RectPokemon(0 , 0 , canvasWidth, canvasHeigth, loadImage("assets/cambios-pokemons.png"))
+  rectPokemonSelect = [
+    new RectPokemon(303 , 25, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[1]), 
+    new RectPokemon(303 , 85, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[2]), 
+    new RectPokemon(303, 145, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[3]),
+    new RectPokemon(303 , 205, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[4]),
+    new RectPokemon(303 , 265, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[5])
+  ]
+  seleccionPokemonActual = new RectPokemonSeleccionado(7, 24, 244, 163, loadImage("assets/pokemon-select.png"), Yo.pokemons[0])
 }

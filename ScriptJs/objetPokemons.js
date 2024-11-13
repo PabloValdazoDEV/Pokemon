@@ -28,7 +28,7 @@ class Entrenador{
     constructor(posicion, nombre, pokemons) {
         this.posicion = posicion;
         this.nombre = nombre;
-        this.pokemos = pokemons
+        this.pokemons = pokemons
     }
 }
 
@@ -47,5 +47,11 @@ const mew = new Pokemon(2, "Mew", "NORMAL", "Hembra", 100, null, [
     new Ataques(3, "Tercero ataque 3", 100, "NORMAL", 30), 
     new Ataques(4, "Cuadrado ataque 4", 100, "ELECTRICO", 40)])
 
-const Natalia = new Entrenador(1, "Natalia", [pikachu, mew])
-const Pablo = new Entrenador(2, "Pablo", [mew, pikachu])
+    const mew2 = new Pokemon(2, "Mew 2", "NORMAL", "Hembra", 200, null, [
+        new Ataques(1, "Primer ataque 11", 20, "ELECTRICO", 4), 
+        new Ataques(2, "Segundo ataque 22", 10, "NORMAL", 20), 
+        new Ataques(3, "Tercero ataque 33", 100, "NORMAL", 30), 
+        new Ataques(4, "Cuadrado ataque 44", 100, "ELECTRICO", 40)])
+
+const Yo = new Entrenador(1, "Natalia", [pikachu, mew, pikachu,mew2, pikachu, mew])
+const Enemy = new Entrenador(2, "Pablo", [mew, pikachu])

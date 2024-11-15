@@ -9,7 +9,6 @@ class RectUpNew {
   rect() {
     fill(this.color);
     noStroke();
-    // rect(this.posX, this.posY, this.sizeWidth, this.sizeHeigth);
     image(img[1], this.posX, this.posY, canvasWidth, (canvasHeigth / 3) * 2);
   }
   draw() {
@@ -230,7 +229,7 @@ class RectSelect {
       `PP        ${pokemonActual.Ataques[position].pp}/${pokemonActual.Ataques[position].ppTotal} \nTIPO/${pokemonActual.Ataques[position].tipo}`
     );
     if (!pokemonEnemigo.vida <= 0) {
-      textoOnlyText = `El pokemon ${pokemonActual.nombre} ha usado ${pokemonActual.Ataques[position].nombre} \nescribe el texto`;
+      textoOnlyText = `El pokemon ${pokemonActual.nombre} ha usado ${pokemonActual.Ataques[position].nombre} \ncontra ${pokemonEnemigo.nombre}`;
     }
     optionPosition = position;
   }
@@ -256,9 +255,8 @@ class RectSelect {
       }
     } else if (pantallaActual.textoBarraVidaYo) {
       this.calculoPP();
-      if (!pokemonEnemigo === 0) {
-        textoOnlyText = `El pokemon ${pokemonEnemigo.nombre} del enemigo ha usado \n${pokemonEnemigo.Ataques[optionPosition].nombre} escribe el texto`;
-      }
+
+      textoOnlyText = `El pokemon ${pokemonEnemigo.nombre} del enemigo ha usado \n${pokemonEnemigo.Ataques[optionPosition].nombre} contra ${pokemonActual.nombre}`;
     } else {
       restaPP = 1;
       textoOnlyText = `Que haras ${pokemonActual.nombre}?`;
@@ -269,7 +267,6 @@ class RectSelect {
       return;
     }
     if (restaPP) {
-      rectUpTopLeft.printVida(pokemonActual, pokemonEnemigo);
       pokemonActual.Ataques[optionPosition].pp -= restaPP;
       restaPP = 0;
     }
@@ -277,7 +274,6 @@ class RectSelect {
   limit(key) {
     if (this.posX < this.dad.posX) {
       this.posX = this.dad.posX;
-
     }
 
     if (this.posX + this.sizeWidth > this.dad.posX + this.dad.sizeWidth - 30) {
@@ -300,45 +296,43 @@ class RectSelect {
     }
   }
   move(key) {
-   
+    if (key === "Backspace") {
+      pantallaActual.selecciónAtaques = false;
+      pantallaActual.menu = true;
+    }
 
     if (key === "ArrowUp") {
       this.posY -= this.sizeHeigth;
-      posiciones.arriba = true
-      posiciones.abajo = false
+      posiciones.arriba = true;
+      posiciones.abajo = false;
     }
     if (key === "ArrowDown") {
       this.posY += this.sizeHeigth;
-      posiciones.abajo = true
-      posiciones.arriba = false
+      posiciones.abajo = true;
+      posiciones.arriba = false;
     }
     if (key === "ArrowRight") {
       this.posX += this.sizeWidth;
-      posiciones.derecha = true
-      posiciones.izquierda = false
+      posiciones.derecha = true;
+      posiciones.izquierda = false;
     }
     if (key === "ArrowLeft") {
       this.posX -= this.sizeWidth;
-      posiciones.izquierda = true
-      posiciones.derecha = false
+      posiciones.izquierda = true;
+      posiciones.derecha = false;
     }
 
-if(pantallaActual.menu){
-  if(posiciones.arriba && posiciones.izquierda){
-    ultimaSeleccion = 1
-
-  }else if(posiciones.arriba && posiciones.derecha){
-    ultimaSeleccion = 2
-
-  }else if(posiciones.abajo && posiciones.izquierda){
-    ultimaSeleccion = 3
-
-  }else if(posiciones.abajo && posiciones.derecha){
-    ultimaSeleccion = 4
-
-  }
-}
-
+    if (pantallaActual.menu) {
+      if (posiciones.arriba && posiciones.izquierda) {
+        ultimaSeleccion = 1;
+      } else if (posiciones.arriba && posiciones.derecha) {
+        ultimaSeleccion = 2;
+      } else if (posiciones.abajo && posiciones.izquierda) {
+        ultimaSeleccion = 3;
+      } else if (posiciones.abajo && posiciones.derecha) {
+        ultimaSeleccion = 4;
+      }
+    }
   }
 
   draw() {
@@ -357,10 +351,12 @@ class RectUpBotNew {
     this.sizeHeigth = sizeHeigth;
     this.image = image;
   }
+  setImage(newImage) {
+    if (this.imame !== newImage) {
+      this.image = newImage;
+    }
+  }
   rect() {
-    // fill(this.color);
-    // noStroke();
-    // rect(this.posX, this.posY, this.sizeWidth, this.sizeHeigth);
     fill(0);
     image(this.image, this.posX, this.posY, this.sizeWidth, this.sizeHeigth);
   }
@@ -404,28 +400,62 @@ class RectUpBotLifeNew {
   }
 
   printVida(pokemonAtacante, pokemonDefensor) {
+    if (todosMuertos) return;
+
     const nuevaVida =
       pokemonDefensor.vida - pokemonAtacante.Ataques[optionPosition].dano;
     pokemonDefensor.vida = nuevaVida;
+
     if (nuevaVida <= 0) {
       pokemonDefensor.vida = 0;
       this.setLife(0);
+      if (Adversario.pokemons[0] === pokemonDefensor) {
+        Adversario.pokemons.shift();
+        if (todosMuertos) return;
+      }
+      if (Adversario.pokemons.length > 0) {
+        pokemonEnemigo = Adversario.pokemons[0];
+        actualizarInterfazPokemon();
+
+        pantallaActual = {
+          inicioCombate: false,
+          menu: true,
+          selecciónAtaques: false,
+          textoBarraVidaEnemigo: false,
+          textoBarraVidaYo: false,
+          selcciónObjetos: false,
+          seleccionObjetoPokemon: false,
+          textoObjeto: false,
+          selecciónPokemon: false,
+          mensajeHuir: false,
+          espera: false,
+        };
+        rectDown.setText(`Que haras ${pokemonActual.nombre}?`);
+      } else {
+        pantallaActual.menu = false;
+        pantallaActual.textoBarraVidaEnemigo = false;
+        rectDown.setText(
+          "Has ganado, toma un pin del Fary! Si quieres \njugar de nuevo actualiza la pagina VAGOOOOO"
+        );
+      }
     } else {
       this.setLife(nuevaVida);
     }
   }
 
-  setLife(newLife) {
+  setLife(newLife, newVidaTotal) {
     this.vida = newLife;
-  }
-  setVida(pokemon){
-    
-    if(pokemon !== this.pokemon){
-      this.pokemon = pokemon
-      this.vida = pokemon.vida;
-      this.vidaTotal = this.vida
+    if (newVidaTotal) {
+      this.vidaTotal = newVidaTotal;
     }
-
+  }
+  setVida(pokemon) {
+    if (pokemon !== this.pokemon) {
+      this.pokemon = pokemon;
+      this.vida = pokemon.vida;
+      this.vidaTotal = pokemon.vidaTotal;
+      this.vidaActualBarra = (this.vida / this.vidaTotal) * this.barraVida[2];
+    }
   }
 
   animateLifeBar() {
@@ -433,6 +463,12 @@ class RectUpBotLifeNew {
 
     if (this.vidaActualBarra > targetWidth) {
       this.vidaActualBarra -= (this.vidaActualBarra - targetWidth) * 0.1;
+      this.updateColor();
+      if (Math.abs(this.vidaActualBarra - targetWidth) < 0.5) {
+        this.vidaActualBarra = targetWidth;
+      }
+    } else if (this.vidaActualBarra < targetWidth) {
+      this.vidaActualBarra += (targetWidth - this.vidaActualBarra) * 0.1;
       this.updateColor();
       if (Math.abs(this.vidaActualBarra - targetWidth) < 0.5) {
         this.vidaActualBarra = targetWidth;
@@ -524,10 +560,9 @@ class RectUpBotLifeNew {
       textFont(fontPokemon);
       textSize(30);
       textAlign(LEFT, CENTER);
-      text(`${this.vida}/${this.vidaTotal}`, this.posX + 173, this.posY + 63);
+      text(`${this.vida}/${this.vidaTotal}`, this.posX + 165, this.posY + 63);
     }
   }
-
 
   draw() {
     this.animateLifeBar();
@@ -538,20 +573,31 @@ class RectUpBotLifeNew {
   }
 }
 class RectPokemon {
-  constructor(posX, posY, sizeWidth, sizeHeigth, image, pokemon) {
+  constructor(
+    posX,
+    posY,
+    sizeWidth,
+    sizeHeigth,
+    image,
+    pokemon,
+    pokemonImagen
+  ) {
     this.posX = posX;
     this.posY = posY;
     this.sizeWidth = sizeWidth;
     this.sizeHeigth = sizeHeigth;
     this.image = image;
     this.pokemon = pokemon;
+    this.pokemonImagen;
     this.hover = false;
   }
   rect() {
     fill(0);
     noStroke();
-    // rect(this.posX, this.posY, this.sizeWidth, this.sizeHeigth);
     image(this.image, this.posX, this.posY, this.sizeWidth, this.sizeHeigth);
+  }
+  setImagePokemon(newImagen) {
+    this.pokemonImagen = newImagen;
   }
   pintartexto() {
     if (this.hover) {
@@ -568,7 +614,7 @@ class RectPokemon {
       );
     }
     fill(0);
-    rect(this.posX, this.posY, 55); // aqui ira el pokemon cuando se llame a la API, cambiar rect por image
+    image(this.pokemonImagen, this.posX - 10, this.posY - 10, 75, 75);
 
     textFont(fontPokemon);
     textSize(28);
@@ -613,11 +659,11 @@ class RectPokemon {
       8
     );
   }
- 
+
   textoPatalla() {
-    if(selecciones.cancelar){
-      fill("#ffffff20")
-      rect(this.posX + 549, this.posY + 345, 140, 30, 20)
+    if (selecciones.cancelar) {
+      fill("#ffffff20");
+      rect(this.posX + 549, this.posY + 345, 140, 30, 20);
     }
     textFont(fontPokemon);
     textSize(28);
@@ -644,21 +690,25 @@ class RectPokemonSeleccionado {
     this.image = image;
     this.pokemon = pokemon;
     this.hover = false;
+    this.imagenPokemon;
   }
-  printText(){
+  setImagePokemon(newImagen) {
+    this.imagenPokemon = newImagen;
+  }
+  printText() {
     textSize(33);
     fill("#515151");
-    text(this.pokemon.nombre, this.posX + 96 , this.posY + 56 );
+    text(this.pokemon.nombre, this.posX + 96, this.posY + 56);
     fill(255);
-    text(this.pokemon.nombre, this.posX + 95 , this.posY + 55 );
+    text(this.pokemon.nombre, this.posX + 95, this.posY + 55);
 
     textSize(33);
-    fill("#0091DB")
-    rect( this.posX + 105 , this.posY + 80, 50, 25)
+    fill("#0091DB");
+    rect(this.posX + 105, this.posY + 80, 50, 25);
     fill("#515151");
-    text("Lv50", this.posX + 110 , this.posY + 80 );
+    text("Lv50", this.posX + 110, this.posY + 80);
     fill(255);
-    text("Lv50", this.posX + 109 , this.posY + 79 );
+    text("Lv50", this.posX + 109, this.posY + 79);
 
     if (this.pokemon.vida < this.pokemon.vidaTotal / 4) {
       fill(248, 88, 56);
@@ -689,11 +739,11 @@ class RectPokemonSeleccionado {
     );
 
     fill(0);
-    rect(this.posX + 20, this.posY + 50, 55); // aqui ira el pokemon cuando se llame a la API, cambiar rect por image
+    image(this.imagenPokemon, this.posX, this.posY + 20, 100, 100);
   }
-  draw(){
-    fill(0)
-    image(this.image, this.posX, this.posY, this.sizeWidth, this.sizeHeigth)
-    this.printText()
+  draw() {
+    fill(0);
+    image(this.image, this.posX, this.posY, this.sizeWidth, this.sizeHeigth);
+    this.printText();
   }
 }

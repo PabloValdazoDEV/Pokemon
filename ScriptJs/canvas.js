@@ -1,24 +1,29 @@
-let canvasWidth = 700; // OK
-let canvasHeigth = 400; // OK
-// let pantallaActual.textoBarraVidaYo = false
-let fontPokemon;  // OK
+let canvasWidth = 700;
+let canvasHeigth = 400;
+
+let fontPokemon;
 let img;
-let escribiendo = false  // OK pero cambiar nombre
-let menu = ["FIGHT", "BAG", "POKEMON", "RUN"]
+let escribiendo = false;
+let menu = ["FIGHT", "BAG", "POKEMON", "RUN"];
 
-let pokemonActual = Yo.pokemons[0]
-let pokemonEnemigo = Enemy.pokemons[0]
+let pokemonActual = Yo.pokemons[0];
+let pokemonEnemigo = Enemy.pokemons[0];
 
-let textoOnlyText =
-  `Que haras ${pokemonActual.nombre}?`
-let optionPosition = 0
+let textoOnlyText = `Que haras ${pokemonActual.nombre}?`;
+let optionPosition = 0;
 
-let restaPP = 1
-let rectUpBotLeft, rectUpBotRigth, rectUpTopLeft, rectUpTopRigth, rectPokemon, rectPokemonSelect, seleccionPokemonActual;
+let restaPP = 1;
+let rectUpBotLeft,
+  rectUpBotRigth,
+  rectUpTopLeft,
+  rectUpTopRigth,
+  rectPokemon,
+  rectPokemonSelect,
+  seleccionPokemonActual;
 
 let pantallaActual = {
-  inicioCombate: false,
-  menu: true,
+  inicioCombate: true,
+  menu: false,
   selecciónAtaques: false,
   textoBarraVidaEnemigo: false,
   textoBarraVidaYo: false,
@@ -26,9 +31,9 @@ let pantallaActual = {
   seleccionObjetoPokemon: false,
   textoObjeto: false,
   selecciónPokemon: false,
-  mensajeHuir: false ,
-  espera: false
-}
+  mensajeHuir: false,
+  espera: false,
+};
 
 let selecciones = {
   pokemon1: true,
@@ -37,11 +42,11 @@ let selecciones = {
   pokemon4: false,
   pokemon5: false,
   pokemon6: false,
-  cancelar: false
-}
+  cancelar: false,
+};
 
-let cancelarSeleccion = false
-let selectPokemon = "Cancelar"
+let cancelarSeleccion = false;
+let selectPokemon = "Cancelar";
 
 let posiciones = {
   arriba: true,
@@ -51,132 +56,139 @@ let posiciones = {
 };
 let ultimaSeleccion = 1;
 
+let todosMuertos = false;
 
-
-
-
-
-// Precargar recuersos
 function preload() {
   fontPokemon = loadFont("assets/pokemon_pixel_font.ttf");
-  img = [loadImage("assets/flecha_OK.png"), loadImage("assets/Campo.png"), loadImage("assets/Vida-enemy.png"),loadImage("assets/back.png")
-    
+  img = [
+    loadImage("assets/flecha_OK.png"),
+    loadImage("assets/Campo.png"),
+    loadImage("assets/Vida-enemy.png"),
+    loadImage("assets/back.png"),
   ];
-  cargaDeImages()
+  cargaDeImages();
 }
 
-// Establecer dimensiones del canvas
 function setup() {
   createCanvas(canvasWidth, canvasHeigth);
-  
 }
 
-//Pintar
 function draw() {
   background(220);
-  if(pantallaActual.selecciónPokemon){
+
+  if (pantallaActual.selecciónPokemon && !todosMuertos) {
     rectPokemon.draw();
-    rectPokemonSelect.forEach((el)=>el.draw())
-    seleccionPokemonActual.draw()
-    return
+    rectPokemonSelect.forEach((el) => el.draw());
+    seleccionPokemonActual.draw();
+    return;
   }
   rectUp.draw();
-  rectDown.draw()
-  rectUpBotLeft.draw()
-  rectUpBotRigth.draw()
-  rectUpTopRigth.draw()
-  rectUpTopLeft.draw()
-  if (pokemonActual.vida <= 0){
-    rectDown.setText( `${pokemonActual.nombre} se ha debilitado (osea muerto)`)
-    pantallaActual.espera = true
-    return
+  rectDown.draw();
+  if (todosMuertos) {
+    pantallaActual.textoBarraVidaEnemigo = false;
   }
-  if( pokemonEnemigo <= 0){
-    rectDown.setText( `${pokemonEnemigo.nombre} se ha debilitado (osea muerto)`)
-    return
+  rectUpBotLeft.draw();
+  rectUpBotRigth.draw();
+  rectUpTopRigth.draw();
+  rectUpTopLeft.draw();
+  if (pokemonActual.vida <= 0) {
+    if (todosMuertos) return;
+    rectDown.setText(
+      "Has perdido: actualiza la pagina \npara intentarlo de nuevo, VAGOOOO!"
+    );
+    pantallaActual.selecciónPokemon = true;
+
+    return;
   }
-  
-if(pantallaActual.menu){
-  rectDownRight.draw()
-  rectDownRightSelect.draw()
-  rectDownOption1.forEach((el)=>el.draw())
+  if (pokemonEnemigo <= 0) {
+    if (todosMuertos) return;
 
-}else if (pantallaActual.selecciónAtaques ){
-  rectDownLeft.draw()
-  rectDownLeftPp.draw()
-  rectDownLeftSelect.draw()
-  rectDownOption2.forEach((el)=>el.draw())
-  rectDownLeft2.draw()
-} else if(pantallaActual.textoBarraVidaYo){
+    rectDown.setText(`${pokemonEnemigo.nombre} se ha debilitado (osea muerto)`);
 
-}else if(pantallaActual.inicioCombate){
-  rectDown.setText("Quieres pegarme?")
-  
+    if (Adversario.pokemons.length === 0) return;
+    Enemy.pokemons.shift();
+    siguientePokemonEnemigo();
+    return;
+  }
+
+  if (pantallaActual.menu) {
+    if (todosMuertos) return;
+    rectDownRight.draw();
+    rectDownRightSelect.draw();
+    rectDownOption1.forEach((el) => el.draw());
+  } else if (pantallaActual.selecciónAtaques) {
+    if (todosMuertos) return;
+    rectDownLeft.draw();
+    rectDownLeftPp.draw();
+    rectDownLeftSelect.draw();
+    rectDownOption2.forEach((el) => el.draw());
+    rectDownLeft2.draw();
+  } else if (pantallaActual.textoBarraVidaYo) {
+  } else if (pantallaActual.inicioCombate) {
+    rectDown.setText("Quieres pegarme?");
+  }
+  rectDownLeftSelect.posicionSelect();
 }
-rectDownLeftSelect.posicionSelect();
-
-}
-
 
 function keyPressed() {
-  if(pantallaActual.selecciónPokemon){
-    
-    selectorPokemon(key)
-    return 
-    
+  if (todosMuertos) return;
+  if (pantallaActual.selecciónPokemon) {
+    selectorPokemon(key);
+    return;
   }
   if (key === "Enter" || key === " ") {
-    rectDown.setText(textoOnlyText)
-    for(i = 0; i < 4; i++ ){
-      rectDownOption2[i].setText(pokemonActual.Ataques[i].nombre)
+    if (todosMuertos) return;
+    rectDown.setText(textoOnlyText);
+    for (i = 0; i < 4; i++) {
+      rectDownOption2[i].setText(pokemonActual.Ataques[i].nombre);
     }
-    if(ultimaSeleccion === 3){
+    if (ultimaSeleccion === 3) {
+      if (todosMuertos) return;
       pantallaActual.menu = false;
-      pantallaActual.selecciónPokemon = true
-      return 
+      pantallaActual.selecciónPokemon = true;
+      return;
     }
-    if(pantallaActual.espera){
+    if (pantallaActual.espera) {
+      if (todosMuertos) return;
       pantallaActual.espera = false;
       pantallaActual.menu = false;
-      pantallaActual.selecciónPokemon = true
-      return
+      pantallaActual.selecciónPokemon = true;
+      return;
     }
 
     if (pantallaActual.menu) {
-      actualizarInterfazPokemon(); 
+      if (todosMuertos) {
+        return;
+      }
+
+      actualizarInterfazPokemon();
       pantallaActual.selecciónAtaques = true;
       pantallaActual.menu = false;
-      
-    }else if (pantallaActual.selecciónAtaques ){
-      if(pokemonActual.Ataques[optionPosition].pp == 0 ){
-        
-        return
+      pantallaActual.inicioCombate = false;
+    } else if (pantallaActual.selecciónAtaques) {
+      if (todosMuertos) return;
+      if (pokemonActual.Ataques[optionPosition].pp == 0) {
+        return;
       }
       //Del 2/3 al 3/3
       pantallaActual.selecciónAtaques = false;
-      pantallaActual.textoBarraVidaEnemigo = true
-      pantallaActual.textoBarraVidaYo = true
-     
-
-      
-      
-    }else if(pantallaActual.textoBarraVidaYo){
-      //Del 3/3 al 1/3
-      if(!pokemonEnemigo.vida === 0){
-        rectDown.setText("Quieres pegarmessasddasdasdasd?")
-        return
-      }
-        rectUpBotRigth.printVida(pokemonEnemigo, pokemonActual)
-      pantallaActual.menu = false;
-      pantallaActual.selecciónAtaques = false
-      pantallaActual.textoBarraVidaEnemigo = true
-      pantallaActual.textoBarraVidaYo = false
-    } else {
-      pantallaActual.menu = true
       pantallaActual.textoBarraVidaEnemigo = true;
-      actualizarInterfazPokemon()
-    }
+      pantallaActual.textoBarraVidaYo = true;
 
+      rectUpTopLeft.printVida(pokemonActual, pokemonEnemigo);
+    } else if (pantallaActual.textoBarraVidaYo) {
+      if (todosMuertos) return;
+      //Del 3/3 al 1/3
+      rectUpBotRigth.printVida(pokemonEnemigo, pokemonActual);
+      pantallaActual.menu = false;
+      pantallaActual.selecciónAtaques = false;
+      pantallaActual.textoBarraVidaEnemigo = true;
+      pantallaActual.textoBarraVidaYo = false;
+    } else {
+      pantallaActual.menu = true;
+      pantallaActual.textoBarraVidaEnemigo = false;
+      actualizarInterfazPokemon();
+    }
   }
 
   rectDownRightSelect.move(key);
@@ -184,186 +196,289 @@ function keyPressed() {
 
   rectDownLeftSelect.move(key);
   rectDownLeftSelect.limit(key);
-
 }
 
+function selectorPokemon(key) {
+  if (todosMuertos) return;
+  if (key === "Backspace") {
+    pantallaActual.menu = true;
+    pantallaActual.selecciónPokemon = false;
+    rectDown.setText(`Que haras ${pokemonActual.nombre}?`);
+    return;
+  }
 
-
-function selectorPokemon(key){
   if (selecciones.pokemon1) {
     if (key === "ArrowUp" || key === "ArrowRight") {
       rectPokemonSelect[0].hover = true;
-      selecciones.pokemon2 = true
-      selectPokemon = rectPokemonSelect[0].pokemon;
-      selecciones.pokemon1 = false
+      selecciones.pokemon2 = true;
+      selectPokemon = Pablo.pokemons[1];
+      selecciones.pokemon1 = false;
     } else if (key === "ArrowDown") {
       selectPokemon = "Cancelar";
-      selecciones.cancelar = true
-      selecciones.pokemon1 = false
+      selecciones.cancelar = true;
+      selecciones.pokemon1 = false;
     }
-   
-
-
   } else if (selecciones.pokemon2) {
     if (key === "ArrowLeft") {
       rectPokemonSelect[0].hover = false;
       selectPokemon = "Cancelar";
-      selecciones.pokemon1 = true
-      selecciones.pokemon2 = false
+      selecciones.pokemon1 = true;
+      selecciones.pokemon2 = false;
     } else if (key === "ArrowDown") {
       rectPokemonSelect[0].hover = false;
       rectPokemonSelect[1].hover = true;
-      selectPokemon = rectPokemonSelect[1].pokemon;
-      selecciones.pokemon3 = true
-      selecciones.pokemon2 = false
+      selectPokemon = Pablo.pokemons[2];
+      selecciones.pokemon3 = true;
+      selecciones.pokemon2 = false;
     }
-
-
-
   } else if (selecciones.pokemon3) {
     if (key === "ArrowLeft") {
       rectPokemonSelect[1].hover = false;
       selectPokemon = "Cancelar";
-      selecciones.pokemon1 = true
-      selecciones.pokemon3 = false
+      selecciones.pokemon1 = true;
+      selecciones.pokemon3 = false;
     } else if (key === "ArrowDown") {
       rectPokemonSelect[1].hover = false;
       rectPokemonSelect[2].hover = true;
-      selectPokemon = rectPokemonSelect[2].pokemon;
-      selecciones.pokemon4 = true
-      selecciones.pokemon3 = false
-    }else if(key === "ArrowUp"){
+      selectPokemon = Pablo.pokemons[3];
+      selecciones.pokemon4 = true;
+      selecciones.pokemon3 = false;
+    } else if (key === "ArrowUp") {
       rectPokemonSelect[1].hover = false;
       rectPokemonSelect[0].hover = true;
-      selectPokemon = rectPokemonSelect[0].pokemon;
-      selecciones.pokemon2 = true
-      selecciones.pokemon3 = false
+      selectPokemon = Pablo.pokemons[1];
+      selecciones.pokemon2 = true;
+      selecciones.pokemon3 = false;
     }
-   
-
-
   } else if (selecciones.pokemon4) {
     if (key === "ArrowLeft") {
       rectPokemonSelect[2].hover = false;
       selectPokemon = "Cancelar";
-      selecciones.pokemon1 = true
-      selecciones.pokemon4 = false
+      selecciones.pokemon1 = true;
+      selecciones.pokemon4 = false;
     } else if (key === "ArrowDown") {
       rectPokemonSelect[2].hover = false;
       rectPokemonSelect[3].hover = true;
-      selectPokemon = rectPokemonSelect[2].pokemon;
-      selecciones.pokemon5 = true
-      selecciones.pokemon4 = false
-    }else if(key === "ArrowUp"){
+      selectPokemon = Pablo.pokemons[4];
+      selecciones.pokemon5 = true;
+      selecciones.pokemon4 = false;
+    } else if (key === "ArrowUp") {
       rectPokemonSelect[2].hover = false;
       rectPokemonSelect[1].hover = true;
-      selectPokemon = rectPokemonSelect[1].pokemon;
-      selecciones.pokemon3 = true
-      selecciones.pokemon4 = false
+      selectPokemon = Pablo.pokemons[2];
+      selecciones.pokemon3 = true;
+      selecciones.pokemon4 = false;
     }
-    
   } else if (selecciones.pokemon5) {
     if (key === "ArrowLeft") {
       rectPokemonSelect[3].hover = false;
       selectPokemon = "Cancelar";
-      selecciones.pokemon1 = true
-      selecciones.pokemon5 = false
+      selecciones.pokemon1 = true;
+      selecciones.pokemon5 = false;
     } else if (key === "ArrowDown") {
       rectPokemonSelect[3].hover = false;
       rectPokemonSelect[4].hover = true;
-      selectPokemon = rectPokemonSelect[4].pokemon;
-      selecciones.pokemon6 = true
-      selecciones.pokemon5 = false
-    }else if(key === "ArrowUp"){
+      selectPokemon = Pablo.pokemons[5];
+      selecciones.pokemon6 = true;
+      selecciones.pokemon5 = false;
+    } else if (key === "ArrowUp") {
       rectPokemonSelect[3].hover = false;
       rectPokemonSelect[2].hover = true;
-      selectPokemon = rectPokemonSelect[2].pokemon;
-      selecciones.pokemon4 = true
-      selecciones.pokemon5 = false
+      selectPokemon = Pablo.pokemons[3];
+      selecciones.pokemon4 = true;
+      selecciones.pokemon5 = false;
     }
-
   } else if (selecciones.pokemon6) {
     if (key === "ArrowLeft") {
       rectPokemonSelect[4].hover = false;
       selectPokemon = "Cancelar";
-      selecciones.pokemon1 = true
-      selecciones.pokemon6 = false
+      selecciones.pokemon1 = true;
+      selecciones.pokemon6 = false;
     } else if (key === "ArrowDown") {
       rectPokemonSelect[4].hover = false;
-      rectPokemon.hover = true
-      selecciones.cancelar = true
-      selecciones.pokemon6 = false
+      rectPokemon.hover = true;
+      selecciones.cancelar = true;
+      selecciones.pokemon6 = false;
       selectPokemon = "Cancelar";
-    }else if(key === "ArrowUp"){
+    } else if (key === "ArrowUp") {
       rectPokemonSelect[4].hover = false;
       rectPokemonSelect[3].hover = true;
-      selectPokemon = rectPokemonSelect[3].pokemon;
-      selecciones.pokemon5 = true
-      selecciones.pokemon6 = false
+      selectPokemon = Pablo.pokemons[4];
+      selecciones.pokemon5 = true;
+      selecciones.pokemon6 = false;
     }
-    
   } else if (selecciones.cancelar) {
-    if(key === "ArrowUp"){
-      rectPokemon.hover = false
+    if (key === "ArrowUp") {
+      rectPokemon.hover = false;
       rectPokemonSelect[4].hover = true;
       selectPokemon = "Cancelar";
-      selecciones.pokemon6 = true
-      selecciones.cancelar = false
-
+      selecciones.pokemon6 = true;
+      selecciones.cancelar = false;
     }
-    
   }
 
   if (selectPokemon !== "Cancelar") {
-    if(!selectPokemon.vida){return }
-    if (key === "Enter" || key === " ") {
-        const filtro = Yo.pokemons.filter((pokemon) => pokemon !== selectPokemon);
-        filtro.unshift(selectPokemon);
-        Yo.pokemons = filtro; 
-        pokemonActual = selectPokemon; 
-        rectUpBotRigth.setPokemon(pokemonActual)
-        actualizarInterfazPokemon();
-        pantallaActual.menu = true
-        pantallaActual.selecciónPokemon = false
-        rectUpTopLeft.setVida(pokemonEnemigo)
-        rectUpBotRigth.setVida(pokemonActual)
-
+    if (!selectPokemon.vida) {
+      return;
     }
-    
-}else if(key === "Enter" || key === " "){
-  pantallaActual.menu = true
-  pantallaActual.selecciónPokemon = false
-}
+    if (key === "Enter" || key === " ") {
+      if (pokemonActual.vida === 0) {
+        pantallaActual.inicioCombate = false;
+        pantallaActual.menu = true;
 
- 
+        const filtro = Pablo.pokemons.filter(
+          (pokemon) => pokemon !== selectPokemon
+        );
+        filtro.unshift(selectPokemon);
+        Pablo.pokemons = filtro;
+        pokemonActual = selectPokemon;
+        actualizarInterfazPokemon();
 
-}
-
-
-function actualizarInterfazPokemon() {
-  
-  for (let i = 0; i < 4; i++) {
-      if (pokemonActual.Ataques[i]) {
-          rectDownOption2[i].setText(pokemonActual.Ataques[i].nombre);
+        pantallaActual.selecciónPokemon = false;
       } else {
-          rectDownOption2[i].setText(""); 
+        if (todosMuertos) return;
+
+        pantallaActual.inicioCombate = false;
+        pantallaActual.textoBarraVidaYo = true;
+        pantallaActual.menu = true;
+
+        const filtro = Pablo.pokemons.filter(
+          (pokemon) => pokemon !== selectPokemon
+        );
+        filtro.unshift(selectPokemon);
+        Pablo.pokemons = filtro;
+        pokemonActual = selectPokemon;
+
+        rectUpBotRigth.printVida(pokemonEnemigo, pokemonActual);
+
+        actualizarInterfazPokemon("Cambio");
+
+        pantallaActual.selecciónPokemon = false;
       }
+    }
+  } else if (key === "Enter" || key === " ") {
+    pantallaActual.menu = true;
+    pantallaActual.selecciónPokemon = false;
+    rectDown.setText(`Que haras ${pokemonActual.nombre}?`);
+  }
+}
+
+function actualizarInterfazPokemon(texto) {
+  comprobarVivos();
+
+  if (pantallaActual.inicioCombate)
+    rectDown.setText(`Que haras ${pokemonActual.nombre}?`);
+  if (texto) {
+    rectDown.setText(`Que haras ${pokemonActual.nombre}?`);
   }
 
-  
-  rectUpBotRigth.setLife(pokemonActual.vida);
+  rectUpBotRigth.setPokemon(pokemonActual);
+
+  rectUpTopLeft.setPokemon(pokemonEnemigo);
+
+  rectUpTopLeft.setLife(pokemonEnemigo.vida, pokemonEnemigo.vidaTotal);
+  rectUpBotRigth.setLife(pokemonActual.vida, pokemonActual.vidaTotal);
+
+  for (let i = 0; i < 4; i++) {
+    if (pokemonActual.Ataques[i]) {
+      rectDownOption2[i].setText(pokemonActual.Ataques[i].nombre);
+    } else {
+      rectDownOption2[i].setText("");
+    }
+  }
+
+  rectUpTopRigth.setImage(loadImage(pokemonEnemigo.imagen.front));
+  rectUpBotLeft.setImage(loadImage(pokemonActual.imagen.back));
+
   seleccionPokemonActual.pokemon = pokemonActual;
 
-  
-  textoOnlyText = `Que haras ${pokemonActual.nombre}?`;
-
-  
+  rectUpTopRigth.imagen = loadImage(pokemonEnemigo.imagen.front);
   rectPokemonSelect = [
-      new RectPokemon(303, 25, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[1]), 
-      new RectPokemon(303, 85, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[2]), 
-      new RectPokemon(303, 145, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[3]),
-      new RectPokemon(303, 205, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[4]),
-      new RectPokemon(303, 265, 370, 55, loadImage("assets/all-pokemon-select.png"), Yo.pokemons[5])
+    new RectPokemon(
+      303,
+      25,
+      370,
+      55,
+      loadImage("assets/all-pokemon-select.png"),
+      Pablo.pokemons[1],
+      loadImage(Pablo.pokemons[1].imagen.front)
+    ),
+    new RectPokemon(
+      303,
+      85,
+      370,
+      55,
+      loadImage("assets/all-pokemon-select.png"),
+      Pablo.pokemons[2],
+      loadImage(Pablo.pokemons[2].imagen.front)
+    ),
+    new RectPokemon(
+      303,
+      145,
+      370,
+      55,
+      loadImage("assets/all-pokemon-select.png"),
+      Pablo.pokemons[3],
+      loadImage(Pablo.pokemons[3].imagen.front)
+    ),
+    new RectPokemon(
+      303,
+      205,
+      370,
+      55,
+      loadImage("assets/all-pokemon-select.png"),
+      Pablo.pokemons[4],
+      loadImage(Pablo.pokemons[4].imagen.front)
+    ),
+    new RectPokemon(
+      303,
+      265,
+      370,
+      55,
+      loadImage("assets/all-pokemon-select.png"),
+      Pablo.pokemons[5],
+      loadImage(Pablo.pokemons[5].imagen.front)
+    ),
   ];
+  seleccionPokemonActual.setImagePokemon(loadImage(pokemonActual.imagen.front));
+  rectPokemonSelect.forEach((el, index) => {
+    el.setImagePokemon(loadImage(Pablo.pokemons[index + 1].imagen.front));
+  });
+}
 
+function siguientePokemonEnemigo() {
+  if (Adversario.pokemons.length > 0) {
+    pokemonEnemigo = Adversario.pokemons[0];
+    actualizarInterfazPokemon();
+  } else {
+    rectDown.setText("¡Has ganado el combate!");
+  }
+}
+
+function comprobarVivos() {
+  const pokemonsVivos = [];
+  Pablo.pokemons.forEach((pokemon) => {
+    if (pokemon.vida === 0) {
+      pokemonsVivos.push(pokemon);
+    }
+  });
+  if (pokemonsVivos.length === 6 || Adversario.pokemons.length === 0) {
+    todosMuertos = true;
+    pantallaActual = {
+      inicioCombate: false,
+      menu: false,
+      selecciónAtaques: false,
+      textoBarraVidaEnemigo: false,
+      textoBarraVidaYo: false,
+      selcciónObjetos: false,
+      seleccionObjetoPokemon: false,
+      textoObjeto: false,
+      selecciónPokemon: false,
+      mensajeHuir: false,
+      espera: false,
+    };
+    rectDown.setText(
+      `Ya pesado no le des mas del enter o espacio \nque has ganado PESADOOO`
+    );
+  }
 }

@@ -1,0 +1,194 @@
+[
+    {
+        "tipo": "normal",
+        "nombre": "Hiperrayo",
+        "pp": 5,
+        "dano": 150
+    },
+    {
+        "tipo": "normal",
+        "nombre": "Cabezazo Zen",
+        "pp": 15,
+        "dano": 80
+    },
+    {
+        "tipo": "fuego",
+        "nombre": "Llamarada",
+        "pp": 5,
+        "dano": 110
+    },
+    {
+        "tipo": "fuego",
+        "nombre": "Nitrocarga",
+        "pp": 20,
+        "dano": 50
+    },
+    {
+        "tipo": "agua",
+        "nombre": "Hidrobomba",
+        "pp": 5,
+        "dano": 110
+    },
+    {
+        "tipo": "agua",
+        "nombre": "Escaldar",
+        "pp": 15,
+        "dano": 80
+    },
+    {
+        "tipo": "electrico",
+        "nombre": "Rayo",
+        "pp": 15,
+        "dano": 90
+    },
+    {
+        "tipo": "electrico",
+        "nombre": "Voltio Cruel",
+        "pp": 5,
+        "dano": 120
+    },
+    {
+        "tipo": "planta",
+        "nombre": "Gigadrenado",
+        "pp": 10,
+        "dano": 75
+    },
+    {
+        "tipo": "planta",
+        "nombre": "Lluevehojas",
+        "pp": 5,
+        "dano": 130
+    },
+    {
+        "tipo": "hielo",
+        "nombre": "Rayo Hielo",
+        "pp": 10,
+        "dano": 90
+    },
+    {
+        "tipo": "hielo",
+        "nombre": "Ventisca",
+        "pp": 5,
+        "dano": 110
+    },
+    {
+        "tipo": "psiquico",
+        "nombre": "Psiquico",
+        "pp": 10,
+        "dano": 90
+    },
+    {
+        "tipo": "psiquico",
+        "nombre": "Premonicion",
+        "pp": 10,
+        "dano": 120
+    },
+    {
+        "tipo": "roca",
+        "nombre": "Avalancha",
+        "pp": 10,
+        "dano": 75
+    },
+    {
+        "tipo": "roca",
+        "nombre": "Poder Pasado",
+        "pp": 5,
+        "dano": 60
+    },
+    {
+        "tipo": "bicho",
+        "nombre": "Zumbido",
+        "pp": 10,
+        "dano": 90
+    },
+    {
+        "tipo": "bicho",
+        "nombre": "Corte Furia",
+        "pp": 20,
+        "dano": 20
+    },
+    {
+        "tipo": "dragon",
+        "nombre": "Garra Dragon",
+        "pp": 15,
+        "dano": 80
+    },
+    {
+        "tipo": "dragon",
+        "nombre": "Cometa Draco",
+        "pp": 5,
+        "dano": 130
+    },
+    {
+        "tipo": "siniestro",
+        "nombre": "Pulso Umbrio",
+        "pp": 15,
+        "dano": 80
+    },
+    {
+        "tipo": "siniestro",
+        "nombre": "Juego Sucio",
+        "pp": 10,
+        "dano": 95
+    },
+    {
+        "tipo": "acero",
+        "nombre": "Cabeza de Hierro",
+        "pp": 15,
+        "dano": 80
+    },
+    {
+        "tipo": "acero",
+        "nombre": "Meteoro Aciago",
+        "pp": 5,
+        "dano": 140
+    },
+    {
+        "tipo": "lucha",
+        "nombre": "A Bocajarro",
+        "pp": 5,
+        "dano": 120
+    },
+    {
+        "tipo": "lucha",
+        "nombre": "Patada Salto Alta",
+        "pp": 10,
+        "dano": 130
+    },
+    {
+        "tipo": "veneno",
+        "nombre": "Puya Nociva",
+        "pp": 20,
+        "dano": 80
+    },
+    {
+        "tipo": "veneno",
+        "nombre": "Lanza Mugre",
+        "pp": 10,
+        "dano": 120
+    },
+    {
+        "tipo": "volador",
+        "nombre": "Pajaro Osado",
+        "pp": 15,
+        "dano": 120
+    },
+    {
+        "tipo": "volador",
+        "nombre": "Vendaval",
+        "pp": 10,
+        "dano": 110
+    },
+    {
+        "tipo": "tierra",
+        "nombre": "Terremoto",
+        "pp": 10,
+        "dano": 100
+    },
+    {
+        "tipo": "tierra",
+        "nombre": "Tierra Viva",
+        "pp": 10,
+        "dano": 90
+    }
+]

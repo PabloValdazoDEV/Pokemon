@@ -226,7 +226,7 @@ class RectSelect {
   }
   printAtack(position) {
     rectDownLeft2.setText(
-      `PP        ${pokemonActual.Ataques[position].pp}/${pokemonActual.Ataques[position].ppTotal} \nTIPO/${pokemonActual.Ataques[position].tipo}`
+      `PP        ${pokemonActual.Ataques[position].pp}/${pokemonActual.Ataques[position].ppTotal} \nTIPO/${pokemonActual.Ataques[position].tipo.toUpperCase()}`
     );
     if (!pokemonEnemigo.vida <= 0) {
       textoOnlyText = `El pokemon ${pokemonActual.nombre} ha usado ${pokemonActual.Ataques[position].nombre} \ncontra ${pokemonEnemigo.nombre}`;

@@ -381,7 +381,7 @@ function actualizarInterfazPokemon(texto) {
 
   for (let i = 0; i < 4; i++) {
     if (pokemonActual.Ataques[i]) {
-      rectDownOption2[i].setText(pokemonActual.Ataques[i].nombre);
+      rectDownOption2[i].setText(pokemonActual.Ataques[i].nombre.toUpperCase());
     } else {
       rectDownOption2[i].setText("");
     }

@@ -60,8 +60,8 @@ async function obtenerPokemonAleatorioKanto() {
 
   const pokemon = new PokemonNew(
     data.id,
-    data.name,
-    data.types.map((typeInfo) => typeInfo.type.name),
+    data.name.toUpperCase(),
+    data.types.map((typeInfo) => typeInfo.type.name.toUpperCase()),
     Math.random() < 0.5 ? "M" : "F",
     hp,
     {
@@ -83,7 +83,7 @@ async function obtenerAtaques(tiposPokemon) {
   );
 
   let ataquesDelTipo = todosAtaques.filter((ataque) =>
-    tipos.includes(ataque.tipo)
+    tipos.includes(ataque.tipo.toUpperCase())
   );
 
   while (ataques.length < 4 && ataquesDelTipo.length > 0) {

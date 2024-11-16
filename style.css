@@ -1,4 +1,24 @@
-body{
-    margin: 0;
+@font-face {
+    font-family: 'funtePokemon'; /* Define la fuente con este nombre */
+    src: url('./assets/Pokemon_GB.ttf') format('truetype');
+}
+
+/* Usa la fuente definida correctamente */
+body {
+    font-family: 'funtePokemon', sans-serif; /* Si la fuente no carga, usará sans-serif como respaldo */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: 0 30%;
     padding: 0;
+    height: 100vh;
+    
+}
+
+h1, p {
+    text-align: center;
+}
+p{
+    font-size: 10px;
 }
